@@ -50,3 +50,30 @@ CURDATE()) >= 18;
 CREATE UNIQUE INDEX dob_idx ON customer(dob);
 ```
 
+## DDL. ALTER
+
+- Изменение имени базы данных:
+
+```sql
+ALTER DATABASE old_name MODIFY NAME = new_name;
+```
+
+ синтаксис T-SQL, не работает в MySQL
+
+- Изменение имени таблицы:
+
+```sql
+ALTER TABLE customer RENAME TO persons;
+```
+
+- Изменение столбцов в таблице:
+
+```sql
+ALTER TABLE persons ADD password CHAR(20) NOT NULL;
+```
+
+- Изменение типа данных атрибута:
+
+```sql
+ALTER TABLE persons MODIFY fio VARCHAR(100);
+```
