@@ -7,6 +7,8 @@ Data Manipulation Language (DML) – это группа операторов д
 - UPDATE – изменяет существующие данные
 - DELETE – удаляет данные
 
+----
+
 ## DML. SELECT
 
 Вывести все записи таблицы:
@@ -62,13 +64,32 @@ INSERT INTO persons (fio) SELECT fio FROM customers;
 - Изменение значения в конкретной строке:
 
 ```sql
-UPDATE persons SET fio = 'Максим Сергеевич';
+UPDATE persons SET fio = 'Максим Сергеевич' WHERE id = 1;
 ```
 
 - Изменение значений по всему атрибуту:
 
 ```sql
-UPDATE persons SET fio = 'Максим Сергеевич' WHERE id = 1;
+UPDATE persons SET fio = 'Максим Сергеевич';
 ```
 
 ### !!! Важно: если не указывать конкретную строку через оператор WHERE — изменения произойдут во всех строках таблицы
+
+----
+
+## DML. DELETE
+
+-Удалить конкретную строку или набор строк:
+
+```sql
+DELETE FROM persons WHERE id IN (1, 3, 7);
+sql
+```
+
+- Удалить все данные в таблице:
+
+```sql
+DELETE FROM persons;
+```
+
+### !!!Важно: если не указывать конкретную строку через оператор WHERE — будут удалены все данные из таблицы
