@@ -32,3 +32,43 @@ SELECT fio, dob FROM persons;
 ```sql
 SELECT fio, dob FROM persons WHERE id > 25;
 ```
+
+----
+
+## DML. INSERT
+
+Вставка данных в таблицу:
+
+```sql
+INSERT INTO persons VALUES (6, «Иванов Иван», «1985-07-12»);
+```
+
+- Вставка данных в таблицу с указанием столбца:
+
+```sql
+INSERT INTO persons (fio) VALUES («Петров Петр»);
+```
+
+- Вставка данных в таблицу из другой таблицы:
+
+```sql
+INSERT INTO persons (fio) SELECT fio FROM customers;
+```
+
+----
+
+## DML. UPDATE
+
+- Изменение значения в конкретной строке:
+
+```sql
+UPDATE persons SET fio = 'Максим Сергеевич';
+```
+
+- Изменение значений по всему атрибуту:
+
+```sql
+UPDATE persons SET fio = 'Максим Сергеевич' WHERE id = 1;
+```
+
+### !!! Важно: если не указывать конкретную строку через оператор WHERE — изменения произойдут во всех строках таблицы
