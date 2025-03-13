@@ -256,7 +256,7 @@ FROM customer
 WHERE first_name LIKE '%jam%';
 ```
 
-<img src = "img/img13.png" width = 40%>
+<img src = "img/img14.png" width = 40%>
 
 ## Работа с датами и временем
 
@@ -296,17 +296,17 @@ SELECT EXTRACT(HOUR FROM NOW()), EXTRACT(DAY_MINUTE FROM NOW()),
 EXTRACT(DAY FROM NOW());
 ```
 
-<img src = "img/img18.png" width = 40%>
+<img src = "img/img18.png" width = 70%>
 
 ```sql
 SELECT DATEDIFF(return_date, rental_date), QUARTER(return_date) FROM rental;
 ```
 
-<img src = "img/img19.png" width = 40%>
+<img src = "img/img19.png" width = 50%>
 
 ```sql
 SELECT DATE_FORMAT(payment_date, '%D – %A – %Y'),
 TIME_FORMAT(TIME(payment_date), '%R') FROM payment;
 ```
 
-<img src = "img/img20.png" width = 40%>
+<img src = "img/img20.png" width = 70%>
