@@ -38,6 +38,8 @@ JOIN film_category fc ON fc.film_id = f.film_id
 JOIN category c ON c.category_id = fc. category_id;
 ```
 
+<img src = "img/img11.png" width = 100%>
+
 ## Простые запросы. ORDER BY
 
 В независимости от того, в каком порядке данные хранятся в базе данных, SQL возвращает результат в непредсказуемом порядке. Чтобы явно задать порядок сортировки, используется оператор ORDER BY. Для того чтобы задать направление сортировки, нужно указывать `ASC` – от меньшего к большему (по умолчанию) или `DESC` – от большего к меньшему. Давайте возьмем запрос с получением стоимости аренды фильма за день и отсортируем по стоимости аренды за день от большего к меньшему, а потом по названию фильма.
@@ -60,6 +62,8 @@ LIMIT 10
 OFFSET 57;
 ```
 
+<img src = "img/img10.png" width = 100%>
+
 ### Простые запросы. DISTINCT
 
 Для получения уникальных значений в результате, используется оператор `DISTINCT`.
@@ -71,12 +75,16 @@ SELECT DISTINCT first_name
 FROM customer;
 ```
 
+<img src = "img/img9.png" width = 100%>
+
 - Если нужно получить уникальные значения по нескольким столбцам, то данные столбцы перечисляются после оператора `DISTINCT`:
 
 ```sql
 SELECT DISTINCT last_name, first_name
 FROM customer;
 ```
+
+<img src = "img/img8.png" width = 100%>
 
 ## Простые запросы. WHERE
 
@@ -95,13 +103,17 @@ FROM payment
 WHERE amount > 7 AND staff_id = 2 OR amount < 5 AND staff_id = 1;
 ```
 
+<img src = "img/img7.png" width = 100%>
+
 ## Простые запросы. CAST
 
 При работе с разными типами данных часто нужно преобразовывать один тип данных к другому, для этого используется оператор CAST со следующим синтаксисом:
 
-```sql 
+```sql
 CAST(value AS type)
 ```
+
+<img src = "img/img6.png" width = 100%>
 
 В таблице payment столбец payment_date имеет тип данных datetime, то есть дата и время, а нужно работать только с датой, для этого преобразуем datetime к date:
 
@@ -110,3 +122,112 @@ SELECT payment_id, CAST(payment_date AS DATE)
 FROM payment;
 ```
 
+Таблица приведения типов, на примере MSSQL
+
+<img src = "img/img5.png" width = 100%>
+
+## Округление
+
+Для округления в MySQL используются следующие функции:
+
+- ROUND – округляет число до заданного числа десятичных знаков,
+- TRUNCATE – усекает число до указанного числа десятичных знаков,
+- FLOOR – возвращает наибольшее целочисленное значение, которое меньше или равно числу,
+- CEIL – возвращает наименьшее целочисленное значение, которое больше или равно числу,
+- ABS – возвращает абсолютное (положительное) значение числа.
+
+Округлим значения используя разные функции:
+
+```sql
+SELECT ROUND(100.576); -- 101
+SELECT ROUND(100.576, 2); -- 100.58
+SELECT TRUNCATE(100.576, 2); -- 100.57
+SELECT FLOOR(100.576); -- 100
+SELECT CEIL(100.576); -- 101
+SELECT ABS(-100.576); -- 100.576
+```
+
+<img src = "img/img4.png" width = 100%>
+
+Получим «красивый» результат стоимости аренды за день:
+
+```sql
+SELECT title, ROUND(rental_rate/rental_duration, 2) AS cost_per_day
+FROM film
+ORDER BY cost_per_day DESC, title
+```
+
+## Арифметические операторы
+
+SQL поддерживает все основные арифметические операторы:
+
+- - – * / – стандартные операторы,
+- POWER – возведение в степень,
+- SQRT – возвращает квадратный корень числа,
+- COS, SIN, TAN, COT, etc – геометрические операторы,
+- DIV – целочисленное деление,
+- % – остаток от деления,
+- GREATEST/LEAST – возвращает наибольшее/наименьшее значение из списка,
+- RAND – возвращает случайное число в диапазоне от 0 (включительно) до 1 (исключительно).
+
+Посмотрим на работу некоторых функций:
+
+```sql
+SELECT POWER(2, 3); -- 8
+SELECT SQRT(64); -- 8
+SELECT 64 DIV 6; -- 10
+SELECT 64%6; -- 4
+SELECT GREATEST(17, 5, 18, 21, 16); -- 21
+SELECT LEAST(17, 5, 18, 21, 16); -- 5
+SELECT RAND(); -- 0.005757967015502944
+```
+
+Посмотрим на работу некоторых функций на данных:
+
+```sql
+SELECT  rental_rate, rental_duration,
+        rental_rate + rental_duration a,
+        rental_rate – rental_duration b,
+        rental_rate * rental_duration c,
+        rental_rate / rental_duration d,
+        rental_rate % rental_duration e,
+        rental_rate DIV rental_duration f,
+        POWER(rental_rate, rental_duration) g,
+        COS(rental_rate) h, SIN(rental_duration) j
+FROM film;
+```
+
+<img src = "img/img3.png" width = 100%>
+
+## Работа со строками
+
+Разберем основные функции для работы с подстроками и строками:
+
+- CONCAT, CONCAT_WS – соединяет строки в одну,_WS – по сепаратору,
+- LENGTH – возвращает длину строки в байтах,
+- CHAR_LENGTH – возвращает длину строки в символах,
+- POSITION – возвращает позицию первого вхождения подстроки в строку,
+- SUBSTR – извлекает подстроку из строки.
+- LEFT / RIGHT – извлекает ряд символов из строки начиная слева / справа,
+- LOWER / UPPER – преобразует строку в нижний / верхний регистр,
+- INSERT – вставляет подстроку в строку в указанной позиции и для определенного количества символов,
+- TRIM – удаляет начальные и конечные пробелы из строки,
+- REPLACE – заменяет все вхождения подстроки в строке на новую подстроку,
+- SUBSTRING_INDEX – возвращает подстроку строки до того, как появится указанное число разделителей.
+
+Давайте разберем, как эти функции работают на практике:
+
+```sql
+SELECT CONCAT(last_name, ' ', first_name, ' ', email) FROM customer;
+SELECT CONCAT_WS(' ', last_name, first_name, email) FROM customer;
+```
+
+<img src = "img/img1.png" width = 100%>
+
+```sql
+SELECT LENGTH(last_name), CHAR_LENGTH(last_name),
+LENGTH('Привет'), CHAR_LENGTH('Привет')
+FROM customer;
+```
+
+<img src = "img/img2.png" width = 100%>
