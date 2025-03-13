@@ -38,7 +38,7 @@ JOIN film_category fc ON fc.film_id = f.film_id
 JOIN category c ON c.category_id = fc. category_id;
 ```
 
-<img src = "img/img11.png" width = 100%>
+<img src = "img/img11.png" width = 40%>
 
 ## Простые запросы. ORDER BY
 
@@ -62,7 +62,7 @@ LIMIT 10
 OFFSET 57;
 ```
 
-<img src = "img/img10.png" width = 100%>
+<img src = "img/img10.png" width = 40%>
 
 ### Простые запросы. DISTINCT
 
@@ -75,7 +75,7 @@ SELECT DISTINCT first_name
 FROM customer;
 ```
 
-<img src = "img/img9.png" width = 100%>
+<img src = "img/img9.png" width = 20%>
 
 - Если нужно получить уникальные значения по нескольким столбцам, то данные столбцы перечисляются после оператора `DISTINCT`:
 
@@ -84,7 +84,7 @@ SELECT DISTINCT last_name, first_name
 FROM customer;
 ```
 
-<img src = "img/img8.png" width = 100%>
+<img src = "img/img8.png" width = 20%>
 
 ## Простые запросы. WHERE
 
@@ -113,7 +113,7 @@ WHERE amount > 7 AND staff_id = 2 OR amount < 5 AND staff_id = 1;
 CAST(value AS type)
 ```
 
-<img src = "img/img6.png" width = 100%>
+<img src = "img/img6.png" width = 90%>
 
 В таблице payment столбец payment_date имеет тип данных datetime, то есть дата и время, а нужно работать только с датой, для этого преобразуем datetime к date:
 
@@ -147,7 +147,7 @@ SELECT CEIL(100.576); -- 101
 SELECT ABS(-100.576); -- 100.576
 ```
 
-<img src = "img/img4.png" width = 100%>
+<img src = "img/img4.png" width = 50%>
 
 Получим «красивый» результат стоимости аренды за день:
 
@@ -222,7 +222,7 @@ SELECT CONCAT(last_name, ' ', first_name, ' ', email) FROM customer;
 SELECT CONCAT_WS(' ', last_name, first_name, email) FROM customer;
 ```
 
-<img src = "img/img1.png" width = 100%>
+<img src = "img/img1.png" width = 70%>
 
 ```sql
 SELECT LENGTH(last_name), CHAR_LENGTH(last_name),
@@ -230,4 +230,4 @@ LENGTH('Привет'), CHAR_LENGTH('Привет')
 FROM customer;
 ```
 
-<img src = "img/img2.png" width = 100%>
+<img src = "img/img2.png" width = 80%>
