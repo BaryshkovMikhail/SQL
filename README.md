@@ -225,9 +225,88 @@ SELECT CONCAT_WS(' ', last_name, first_name, email) FROM customer;
 <img src = "img/img1.png" width = 70%>
 
 ```sql
-SELECT LENGTH(last_name), CHAR_LENGTH(last_name),
-LENGTH('Привет'), CHAR_LENGTH('Привет')
+SELECT  LENGTH(last_name), CHAR_LENGTH(last_name),
+        LENGTH('Привет'), CHAR_LENGTH('Привет')
 FROM customer;
 ```
 
 <img src = "img/img2.png" width = 80%>
+
+```sql
+SELECT  POSITION('D' IN last_name), SUBSTR(last_name, 2, 3),
+        LEFT(last_name, 3), RIGHT(last_name, 3)
+FROM customer;
+```
+
+<img src = "img/img12.png" width = 80%>
+
+```sql
+SELECT LOWER(last_name), INSERT(last_name, 'MAX', 1, 5),
+REPLACE(last_name, 'A', 'X')
+FROM customer;
+```
+
+<img src = "img/img13.png" width = 80%>
+
+Выражение `LIKE` возвращает true, если строка соответствует заданному шаблону. Выражение `NOT LIKE` возвращает `false`, когда`LIKE` возвращает true и наоборот. Если шаблон не содержит знаков процента и подчеркиваний, тогда шаблон представляет в точности строку и `LIKE` работает как оператор сравнения. Подчеркивание (_) в шаблоне подменяет (вместо него подходит) любой символ. Знак процента (%) подменяет любую (в том числе и пустую) последовательность символов.
+
+```sql
+SELECT CONCAT(last_name, ' ', first_name)
+FROM customer
+WHERE first_name LIKE '%jam%';
+```
+
+<img src = "img/img13.png" width = 40%>
+
+## Работа с датами и временем
+
+Разберем основные функции для работы с датами и временем:
+
+- NOW / CURDATE – возвращает текущие дату и время / дату,
+- DATE_ADD – добавляет интервал времени/даты к дате, а затем возвращает дату, работает как с датой, так и со временем,
+- DATE_SUB – вычитает интервал времени/даты из даты, а затем возвращает дату, работает как с датой, так и со временем,
+- YEAR / MONTH / DAY — возвращает год / месяц / день месяца для заданной даты,
+- EXTRACT – извлекает часть из заданной даты,
+- DATEDIFF – возвращает количество дней между двумя значениями даты,
+- QUARTER – возвращает квартал года для заданного значения даты,
+- DATE_FORMAT – форматирует указанную дату,
+- TIME_FORMAT – форматирует время по заданному формату,
+- DATE – извлекает дату из выражения datetime.
+
+```sql
+SELECT DATE_ADD(NOW(), INTERVAL 3 DAY);
+```
+
+<img src = "img/img16.png" width = 40%>
+
+```sql
+SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY);
+```
+
+<img src = "img/img15.png" width = 40%>
+
+```sql
+SELECT YEAR(NOW()), MONTH(NOW()), WEEK(NOW()), DAY(NOW());
+```
+
+<img src = "img/img17.png" width = 40%>
+
+```sql
+SELECT EXTRACT(HOUR FROM NOW()), EXTRACT(DAY_MINUTE FROM NOW()),
+EXTRACT(DAY FROM NOW());
+```
+
+<img src = "img/img18.png" width = 40%>
+
+```sql
+SELECT DATEDIFF(return_date, rental_date), QUARTER(return_date) FROM rental;
+```
+
+<img src = "img/img19.png" width = 40%>
+
+```sql
+SELECT DATE_FORMAT(payment_date, '%D – %A – %Y'),
+TIME_FORMAT(TIME(payment_date), '%R') FROM payment;
+```
+
+<img src = "img/img20.png" width = 40%>
