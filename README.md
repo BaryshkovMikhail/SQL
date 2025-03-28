@@ -352,7 +352,7 @@ INNER JOIN film_actor fa ON fa.film_id = f.film_id
 INNER JOIN actor a ON a.actor_id = fa.actor_id;
 ```
 
-<img src = "img/img22.png" width = 60%>
+<img src = "img/img22.png" width = 40%>
 
 В этом случае можно использовать **INNER JOIN** без потери данных, так как в таблицах есть необходимые ограничения
 
@@ -369,7 +369,7 @@ LEFT JOIN address a ON a.address_id = c.address_id
 LEFT JOIN city c2 ON c2.city_id = a.city_id;
 ```
 
-<img src = "img/img23.png" width = 60%>
+<img src = "img/img23.png" width = 40%>
 
 Чтобы получить только те строки, которые не содержат данных в правой таблице, можно использовать оператор **WHERE**
 
@@ -385,7 +385,7 @@ WHERE r.rental_id IS NULL;
 
 Здесь получаем 100% данных по всем фильмам, обогащаем через LEFT JOIN данными по аренде. Фильмы, которые не брали в аренду дополняются значениями NULL, по которым и фильтруем в конце запроса
 
-<img src = "img/img24.png" width = 60%>
+<img src = "img/img24.png" width = 40%>
 
 ### RIGHT JOIN
 
@@ -400,4 +400,4 @@ RIGHT JOIN address a ON a.address_id = c.address_id
 RIGHT JOIN city c2 ON c2.city_id = a.city_id;
 ```
 
-<img src = "img/img25.png" width = 60%>
+<img src = "img/img25.png" width = 40%>
