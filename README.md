@@ -401,3 +401,112 @@ RIGHT JOIN city c2 ON c2.city_id = a.city_id;
 ```
 
 <img src = "img/img25.png" width = 40%>
+
+### FULL JOIN
+
+**FULL JOIN** не поддерживается MySQL. Рассмотрим его синтаксис в других СУБД и как реализовать в MySQL.
+**FULL JOIN** позволяет получить сопоставление по всем строкам в обеих таблицах. То есть получаем все данные из левой и правой таблиц, а там, где сопоставлений нет — добавляются значения **NULL**
+
+Нужно получить данные по всем арендам и платежам по этим арендам. Пример выполнен в **PostgreSQL**
+
+```sql
+SELECT r.rental_id, r.rental_date, p.payment_id, p.payment_date, p.amount
+FROM rental r
+FULL JOIN payment p ON p.rental_id = r.rental_id;
+```
+
+<img src = "img/img26.png" width = 40%>
+
+Чтобы получить список уникальных строк из обеих таблиц, можно также воспользоваться оператором **WHERE**
+
+Нужно найти записи по арендам и платежам, по которым нет пересечения. Пример выполнен в PostgreSQL
+
+```sql
+SELECT r.rental_id, r.rental_date, p.payment_id, p.payment_date, p.amount
+FROM rental r
+FULL JOIN payment p ON p.rental_id = r.rental_id
+WHERE r.rental_id IS NULL OR p.payment_id IS NULL;
+```
+
+<img src = "img/img27.png" width = 40%>
+
+Реализация FULL JOIN в MySQL с помощью оператора UNION. Нужно получить данные по всем арендам и платежам по этим арендам
+
+```sql
+SELECT r.rental_id, r.rental_date, p.payment_id, p.payment_date, p.amount
+FROM rental r
+LEFT JOIN payment p ON p.rental_id = r.rental_id
+UNION
+SELECT r.rental_id, r.rental_date, p.payment_id, p.payment_date, p.amount
+FROM rental r
+RIGHT JOIN payment p ON p.rental_id = r.rental_id;
+```
+
+<img src = "img/img28.png" width = 40%>
+
+### CROSS JOIN
+
+CROSS JOIN — это Декартово произведение, когда каждая строка
+левой таблицы сопоставляется с каждой строкой правой таблицы.
+В результате получается таблица со всеми возможными
+сочетаниями строк обеих таблиц.
+Нужно получить все возможные пары городов и убрать
+зеркальные варианты А-Б, Б-А
+
+```sql
+SELECT c.city, c2.city
+FROM city c
+CROSS JOIN city c2
+WHERE c.city > c2.city;
+
+=
+
+SELECT c.city, c2.city
+FROM city c, city c2
+WHERE c.city > c2.city;
+```
+
+### UNION/EXCEPT
+
+Если при работе с JOIN соединение данных происходит «слева» или «справа», то при работе с операторами UNION или EXCEPT работа происходит «сверху» и «снизу». Создадим две таблицы и внесем в них данные:
+
+```sql
+CREATE TABLE table_1 (color_1 VARCHAR(10) NOT NULL);
+CREATE TABLE table_2 (color_2 VARCHAR(10) NOT NULL);
+INSERT INTO table_1
+VALUES('white'), ('black'), ('red'), ('green');
+INSERT INTO table_2
+VALUES('black'), ('yellow'), ('blue'), ('red');
+```
+
+<img src = "img/img29.png" width = 40%>
+
+При объединении данных через оператор UNION в результате будет список уникальных значений для двух таблиц:
+
+```sql
+SELECT color_1 FROM table_1
+UNION
+SELECT color_2 FROM table_2;
+```
+
+Обязательное условие при работе с операторами **UNION** или **EXCEPT** — количество столбцов и их типы
+данных в таблицах сверху и снизу должно быть одинаковым
+
+<img src = "img/img30.png" width = 40%>
+
+При объединении данных через оператор UNION ALL в результате будет список всех значений для двух таблиц:
+
+```sql
+SELECT color_1 FROM table_1
+UNION ALL
+SELECT color_2 FROM table_2;
+```
+
+### EXCEPT
+
+При использовании оператора EXCEPT из значений, полученных в верхней части запроса, будут вычтены значения, которые совпадут со значениями, полученными в нижней части запроса.Запрос выполнен в PostgreSQL:
+
+```sql
+SELECT color_1 FROM table_1
+EXCEPT
+SELECT color_2 FROM table_2;
