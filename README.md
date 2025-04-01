@@ -720,7 +720,7 @@ GROUP BY
  c.customer_id
 ```
 
-<img src = "img/img40.png" width = 20%>
+<img src = "img/img40.png" width = 30%>
 
 ## COALESCE
 
@@ -733,4 +733,4 @@ DATEDIFF(NOW(), rental_date)) AS diff
 FROM rental
 ```
 
-<img src = "img/img41.png" width = 10%>
+<img src = "img/img41.png" width = 20%>
