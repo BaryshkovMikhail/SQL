@@ -367,7 +367,7 @@ LEFT JOIN address a ON a.address_id = c.address_id
 LEFT JOIN city c2 ON c2.city_id = a.city_id;
 ```
 
-<img src = "img/img23.png" width = 40%>
+<img src = "img/img23.png" width = 60%>
 
 Чтобы получить только те строки, которые не содержат данных в правой таблице, можно использовать оператор **WHERE**
 
@@ -383,7 +383,7 @@ WHERE r.rental_id IS NULL;
 
 Здесь получаем 100% данных по всем фильмам, обогащаем через LEFT JOIN данными по аренде. Фильмы, которые не брали в аренду дополняются значениями NULL, по которым и фильтруем в конце запроса
 
-<img src = "img/img24.png" width = 40%>
+<img src = "img/img24.png" width = 30%>
 
 ### RIGHT JOIN
 
@@ -398,7 +398,7 @@ RIGHT JOIN address a ON a.address_id = c.address_id
 RIGHT JOIN city c2 ON c2.city_id = a.city_id;
 ```
 
-<img src = "img/img25.png" width = 40%>
+<img src = "img/img25.png" width = 60%>
 
 ### FULL JOIN
 
@@ -413,7 +413,7 @@ FROM rental r
 FULL JOIN payment p ON p.rental_id = r.rental_id;
 ```
 
-<img src = "img/img26.png" width = 40%>
+<img src = "img/img26.png" width = 60%>
 
 Чтобы получить список уникальных строк из обеих таблиц, можно также воспользоваться оператором **WHERE**
 
@@ -426,7 +426,7 @@ FULL JOIN payment p ON p.rental_id = r.rental_id
 WHERE r.rental_id IS NULL OR p.payment_id IS NULL;
 ```
 
-<img src = "img/img27.png" width = 40%>
+<img src = "img/img27.png" width = 60%>
 
 Реализация FULL JOIN в MySQL с помощью оператора UNION. Нужно получить данные по всем арендам и платежам по этим арендам
 
@@ -440,7 +440,7 @@ FROM rental r
 RIGHT JOIN payment p ON p.rental_id = r.rental_id;
 ```
 
-<img src = "img/img28.png" width = 40%>
+<img src = "img/img28.png" width = 60%>
 
 ### CROSS JOIN
 
@@ -484,7 +484,7 @@ INSERT
 VALUES('black'),('yellow'),('blue'),('red');
 ```
 
-<img src = "img/img29.png" width = 40%>
+<img src = "img/img29.png" width = 30%>
 
 При объединении данных через оператор UNION в результате будет список уникальных значений для двух таблиц:
 
@@ -497,7 +497,7 @@ SELECT color_2 FROM table_2;
 Обязательное условие при работе с операторами **UNION** или **EXCEPT** — количество столбцов и их типы
 данных в таблицах сверху и снизу должно быть одинаковым
 
-<img src = "img/img30.png" width = 40%>
+<img src = "img/img30.png" width = 20%>
 
 При объединении данных через оператор UNION ALL в результате будет список всех значений для двух таблиц:
 
@@ -517,7 +517,7 @@ EXCEPT
 SELECT color_2 FROM table_2;
 ```
 
-<img src = "img/img31.png" width = 30%>
+<img src = "img/img31.png" width = 10%>
 
 Оператор **EXCEPT** не поддерживается **MySQL**, но можно такой жерезультат получить следующим запросом:
 
@@ -555,7 +555,7 @@ WHERE
  LOWER(LEFT(title, 1)) = 'a';
 ```
 
-<img src = "img/img32.png" width = 30%>
+<img src = "img/img32.png" width = 10%>
 
 Так как функция COUNT возвращает количество строк, полученных в результате запроса, то аргументом можно передать любое значение, главное, чтобы оно соответствовало смыслу задачи
 
@@ -567,4 +567,4 @@ AVG(amount), MIN(amount), MAX(amount)
 FROM payment
 GROUP BY customer_id;
 ```
-<img src = "img/img33.png" width = 60%>
+<img src = "img/img33.png" width = 70%>
