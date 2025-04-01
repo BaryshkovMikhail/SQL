@@ -619,3 +619,118 @@ HAVING COUNT(r.rental_id) > 40;
 
 Если подзапрос возвращает таблицу, подзапросу обязательно задаётся алиас
 
+Нужно получить процентное отношение платежей по каждому месяцу к общей сумме платежей:
+
+```sql
+SELECT MONTH(payment_date),
+COUNT(payment_id) / (SELECT COUNT(1) FROM payment) * 100
+FROM payment
+GROUP BY MONTH(payment_date);
+```
+
+<img src = "img/img36.png" width = 60%>
+
+Нужно получить фильмы из категорий, начинающихся на букву С:
+
+```sql
+SELECT f.title, c.name
+FROM film f
+JOIN film_category fc ON fc.film_id = f.film_id
+JOIN category c ON c.category_id = fc.category_id
+WHERE c.category_id IN (
+SELECT category_id
+FROM category
+WHERE name LIKE 'C%')
+ORDER BY f.title;
+```
+
+<img src = "img/img37.png" width = 60%>
+
+Получим отношение количества платежей к количеству аренд по каждому сотруднику:
+
+```sql
+SELECT
+ CONCAT(s.last_name, ' ', s.first_name), cp / cr
+FROM
+ staff s
+JOIN (
+ SELECT
+  staff_id, COUNT(payment_id) AS cp
+ FROM
+  payment
+ GROUP BY
+  staff_id) t1 ON s.staff_id = t1.staff_id
+JOIN (
+ SELECT
+  staff_id, COUNT(rental_id) AS cr
+ FROM
+  rental
+ GROUP BY
+  staff_id) t2 ON s.staff_id = t2.staff_id;
+```
+
+<img src = "img/img38.png" width = 60%>
+
+## CASE
+
+Выражение **CASE** в **SQL** представляет собой общее условное выражение, напоминающее операторы if/else в других языках программирования. Типы данных всех выражений результатов должны приводиться к одному выходному типу
+
+В запросе мы проверяем, что если пользователь купил более чем на 200 у. е., то он хороший клиент, если менее чем на 200, то не очень хороший, в остальных случаях — «средний».
+
+```sql
+SELECT
+ customer_id,
+ SUM(amount),
+ CASE
+  WHEN SUM(amount) > 200 THEN 'Good user'
+  WHEN SUM(amount) < 200 THEN 'Bad user'
+  ELSE 'Average user'
+ END AS good_or_bad
+FROM
+ payment
+GROUP BY
+ customer_id
+ORDER BY
+ SUM(amount) DESC
+LIMIT 5;
+```
+
+<img src = "img/img39.png" width = 60%>
+
+## IFNULL
+
+Функция **IFNULL** позволяет возвращать альтернативное значение, если выражение возвращает **NULL**. Нужно получить список всех пользователей и сумму их платежа за 18.06.2005, вместо значений NULL нужно проставить 0
+
+```sql
+SELECT
+ CONCAT(c.last_name, ' ', c.first_name) AS user,
+ IFNULL(SUM(p.amount), 0)
+FROM
+ customer c
+LEFT JOIN (
+ SELECT
+  *
+ FROM
+  payment
+ WHERE
+  DATE(payment_date) = '2005-06-18') p
+ON
+ p.customer_id = c.customer_id
+GROUP BY
+ c.customer_id
+```
+
+<img src = "img/img40.png" width = 60%>
+
+## COALESCE
+
+Функция COALESCE позволяет возвращать первое значение из списка, которое не равно NULL. Выведем в результат первый не NULL результат разницы между датой аренды и датой возврата, текущей датой и датой возврата, текущей датой и датой аренды
+
+```sql
+SELECT rental_id,
+COALESCE(DATEDIFF(return_date, rental_date), DATEDIFF(NOW(), return_date),
+DATEDIFF(NOW(), rental_date)) AS diff
+FROM rental
+```
+
+<img src = "img/img41.png" width = 30%>
