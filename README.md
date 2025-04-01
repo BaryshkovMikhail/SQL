@@ -644,7 +644,7 @@ WHERE name LIKE 'C%')
 ORDER BY f.title;
 ```
 
-<img src = "img/img37.png" width = 60%>
+<img src = "img/img37.png" width = 40%>
 
 Получим отношение количества платежей к количеству аренд по каждому сотруднику:
 
@@ -695,7 +695,7 @@ ORDER BY
 LIMIT 5;
 ```
 
-<img src = "img/img39.png" width = 60%>
+<img src = "img/img39.png" width = 40%>
 
 ## IFNULL
 
@@ -720,7 +720,7 @@ GROUP BY
  c.customer_id
 ```
 
-<img src = "img/img40.png" width = 60%>
+<img src = "img/img40.png" width = 20%>
 
 ## COALESCE
 
@@ -733,4 +733,4 @@ DATEDIFF(NOW(), rental_date)) AS diff
 FROM rental
 ```
 
-<img src = "img/img41.png" width = 30%>
+<img src = "img/img41.png" width = 10%>
