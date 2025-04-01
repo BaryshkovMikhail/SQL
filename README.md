@@ -324,7 +324,6 @@ SELECT * FROM payment WHERE amount BETWEEN 5 AND 7;
 
 <img src = "img/img21.png" width = 80%>
 
-
 ## JOIN
 
 В SQL JOIN используются для соединения нескольких таблиц и получения из них данных. Существуют следующие типы JOIN:
@@ -337,7 +336,6 @@ SELECT * FROM payment WHERE amount BETWEEN 5 AND 7;
 
 В **LEFT OUTER JOIN**, **RIGHT OUTER JOIN** и **FULL OUTER JOIN** ключевое слово **OUTER** можно опустить, оно не обязательно для использования.
 Также при использовании **INNER JOIN** можно опустить ключевое слово **INNER** При работе с **JOIN** желательно использовать алиасы, для удобства чтения или написания запросов и указания,из каких таблиц какие столбцы нужно получать.
-
 
 ### INNER JOIN
 
@@ -472,11 +470,18 @@ WHERE c.city > c2.city;
 
 ```sql
 CREATE TABLE table_1 (color_1 VARCHAR(10) NOT NULL);
+
 CREATE TABLE table_2 (color_2 VARCHAR(10) NOT NULL);
-INSERT INTO table_1
-VALUES('white'), ('black'), ('red'), ('green');
-INSERT INTO table_2
-VALUES('black'), ('yellow'), ('blue'), ('red');
+
+INSERT
+ INTO
+ table_1
+VALUES('white'),('black'),('red'),('green');
+
+INSERT
+ INTO
+ table_2
+VALUES('black'),('yellow'),('blue'),('red');
 ```
 
 <img src = "img/img29.png" width = 40%>
@@ -504,9 +509,62 @@ SELECT color_2 FROM table_2;
 
 ### EXCEPT
 
-При использовании оператора EXCEPT из значений, полученных в верхней части запроса, будут вычтены значения, которые совпадут со значениями, полученными в нижней части запроса.Запрос выполнен в PostgreSQL:
+При использовании оператора **EXCEPT** из значений, полученных в верхней части запроса, будут вычтены значения, которые совпадут со значениями, полученными в нижней части запроса.Запрос выполнен в **PostgreSQL**:
 
 ```sql
 SELECT color_1 FROM table_1
 EXCEPT
 SELECT color_2 FROM table_2;
+```
+
+<img src = "img/img31.png" width = 30%>
+
+Оператор **EXCEPT** не поддерживается **MySQL**, но можно такой жерезультат получить следующим запросом:
+
+```sql
+SELECT
+ color_1
+FROM
+ table_1
+WHERE
+ color_1 NOT IN (
+ SELECT
+  color_2
+ FROM
+  table_2);
+```
+
+## Агрегатные функции
+
+Агрегация — когда данные группируются по ключу, в качестве которого выступает один или несколько атрибутов, и внутри каждой группы вычисляются некоторые статистики.
+
+- SUM — возвращает общую сумму числового столбца
+- COUNT — возвращает количество строк, соответствующих заданному критерию
+- AVG — возвращает среднее значение числового столбца
+- MIN — возвращает наименьшее значение выбранного столбца
+- MAX — возвращает наибольшее значение выбранного столбца
+
+Посчитаем, сколько фильмов в базе начинается на букву А:
+
+```sql
+SELECT
+ COUNT(1)
+FROM
+ film
+WHERE
+ LOWER(LEFT(title, 1)) = 'a';
+```
+
+<img src = "img/img32.png" width = 30%>
+
+Так как функция COUNT возвращает количество строк, полученных в результате запроса, то аргументом можно передать любое значение, главное, чтобы оно соответствовало смыслу задачи
+
+В одном запросе получим информацию по количеству платежей, общей сумме платежей, среднему платежу, максимальному и минимальному платежу по каждому пользователю:
+
+```sql
+SELECT customer_id, COUNT(payment_id), SUM(amount),
+AVG(amount), MIN(amount), MAX(amount)
+FROM payment
+GROUP BY customer_id;
+```
+<img src = "img/img33.png" width = 60%>
