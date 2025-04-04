@@ -919,7 +919,7 @@ FROM film_temp
 WHERE language_id = 1 AND release_year = 2006;
 ```
 
-<img src = "img/img46.png" width = 60%>
+<img src = "img/img47.png" width = 60%>
 
 Планировщик использует составной индекс lang_year:
 
@@ -932,3 +932,51 @@ WHERE language_id = 1 AND release_year = 2006;
 
 -> Index lookup on film_temp using lang_year (language_id=1, release_year=2006)
 (cost=80.53 rows=500) (actual time=0.038..1.409 rows=500 loops=1)
+
+### В MySQL индексы можно разделить на следующие типы:
+
+- B-TREE — PRIMARY KEY, UNIQUE, INDEX и FULLTEXT,
+- R-TREE — пространственные типы данных,
+- INVERTED — в механизме хранения InnoDB для FULLTEXT,
+- HASH — только в механизме хранения Memory.
+
+## Уникальные индексы
+
+Индексы разделяются на обычные и уникальные. Когда происходит поиск по обычному индексу, то есть по не уникальным значениям, то после первого нахождения соответствия поиск будет продолжен. В случае с уникальным индексом, после нахождения искомого значения поиск будет остановлен. Уникальные ключи работают так же, как и первичные ключи, только их может быть любое количество. Создаются через запросы:
+
+```sql
+ALTER TABLE `имя_таблицы` ADD UNIQUE INDEX `имя_индекса`...;
+CREATE UNIQUE INDEX `имя_индекса`...;
+```
+
+## Стоимость индексов
+
+При использовании индексов происходят дополнительные операции записи на жесткий диск. Таким образом при каждом обновлении или добавлении данных в таблицу, происходит также
+запись и обновление данных в индексе. Если в операциях SELECT индексы ускоряют работу, то в операциях INSERT и UPDATE время увеличивается, как и занимаемое место на жестком диске.Удалим индексы во временной таблице film_temp:
+
+```sql
+ALTER TABLE film_temp DROP PRIMARY KEY;
+DROP INDEX lang_year ON film_temp;
+```
+
+Посмотрим на размер таблицы без индексов:
+
+```sql
+SELECT table_name, data_length, index_length
+FROM INFORMATION_SCHEMA.TABLES
+WHERE table_name = "film_temp";
+```
+
+<img src = "img/img48.png" width = 60%>
+
+Добавим индекс PRIMARY KEY и составной индекс lang_year и проверим размер:
+
+```sql
+ALTER TABLE film_temp ADD PRIMARY KEY (film_id);
+CREATE INDEX lang_year ON film_temp(language_id, release_year);
+SELECT table_name, data_length, index_length
+FROM INFORMATION_SCHEMA.TABLES
+WHERE table_name = "film_temp";
+```
+
+<img src = "img/img49.png" width = 60%>
