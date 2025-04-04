@@ -734,3 +734,175 @@ FROM rental
 ```
 
 <img src = "img/img41.png" width = 20%>
+
+# EXPLAIN
+
+Оператор **EXPLAIN** демонстрирует этапы выполнения запроса и может быть использован для оптимизации. По результату работы **EXPLAIN** можно выяснить, где в запросе узкие места, нужно ли использовать индексы, верный ли порядок и алгоритмы джойна выбраны при соединении таблиц и так далее.
+
+EXPLAIN работает с **SELECT**, **DELETE**, **INSERT**, **REPLACE** и **UPDATE** операторами. В MySQL 8.0.19 и более поздних версиях он также работает с оператором **TABLE**. Оператор **EXPLAIN** выводит план запроса.
+
+При использовании оператора **EXPLAIN** можно указать формат вывода с помощью оператора **FORMAT**:
+
+- TRADITIONAL — вывод в табличном формате;
+- JSON — вывод в формате JSON;
+- TREE — древовидный вывод с более точными описаниями обработки запросов, чем TRADITIONAL.
+
+```sql
+EXPLAIN FORMAT = TRADITIONAL
+SELECT *
+FROM customer c
+JOIN address a ON a.address_id = c.address_id
+JOIN city c2 ON c2.city_id = a.city_id
+WHERE c2.city_id = 17;
+```
+
+<img src = "img/img42.png" width = 20%>
+
+## EXPLAIN ANALYZE
+
+В MySQL 8.0.18 добавлена возможность использования оператора **EXPLAIN ANALYZE**, который запускает оператор и производит **EXPLAIN** вывод вместе с синхронизацией и дополнительной, основанной на итераторах, информацией о том, как ожидания оптимизатора совпадают с фактическим выполнением. **EXPLAIN ANALYZE** всегда использует **TREE** формат.
+
+Для каждого итератора предоставляется следующая информация:
+
+- ориентировочная стоимость исполнения,
+- расчетное количество возвращаемых строк,
+- фактическое время возврата первой строки в миллисекундах,
+- фактическое время возврата всех строк в миллисекундах (при наличии нескольких циклов этот пункт показывает среднее время на цикл),
+- количество строк, возвращаемых итератором,
+- количество циклов.
+
+```sql
+EXPLAIN ANALYZE
+SELECT *
+FROM customer c
+JOIN address a ON a.address_id = c.address_id
+JOIN city c2 ON c2.city_id = a.city_id
+WHERE c2.city_id = 17;
+```
+
+-> Nested loop inner join (cost=1.68 rows=1) (actual time=0.088..0.092 rows=1
+loops=1)
+-> Index lookup on a using idx_fk_city_id (city_id=17) (cost=0.95 rows=1)
+(actual time=0.070..0.071 rows=1 loops=1)
+-> Index lookup on c using idx_fk_address_id (address_id=a.address_id)
+(cost=0.72 rows=1) (actual time=0.016..0.018 rows=1 loops=1)
+
+## INDEX – это инструмент, который позволяет оптимизировать выборку из базы данных, значительно сокращая время на получение данных
+
+Создадим временную таблицу и внесем в нее данные:
+
+```sql
+CREATE TABLE film_temp (
+film_id INT,
+title VARCHAR(50),
+description TEXT,
+language_id INT,
+release_year INT
+);
+INSERT
+ INTO
+ film_temp
+SELECT
+ film_id,
+ title,
+ description,
+ language_id,
+ release_year
+FROM
+ film;
+```
+
+В данной таблице будут отсутствовать ограничения и индексы.
+
+```sql
+SELECT
+ *
+FROM
+ INFORMATION_SCHEMA.STATISTICS
+WHERE
+ TABLE_NAME = 'film_temp';
+```
+
+<img src = "img/img43.png" width = 60%>
+
+```sql
+SHOW INDEXES FROM film_temp;
+```
+
+Посмотрим на план запроса, где нужно получить фильм с id = 100:
+
+```sql
+EXPLAIN
+SELECT *
+FROM film_temp
+WHERE film_id = 100;
+```
+
+<img src = "img/img44.png" width = 60%>
+
+Видим, что происходит обычное сканирование таблицы, отсутствует значение possible_keys:
+
+```sql
+EXPLAIN ANALYZE
+SELECT *
+FROM film_temp
+WHERE film_id = 100;
+-> Filter: (film_temp.film_id = 100) (cost=103.00 rows=100) (actual
+time=0.186..1.624 rows=1 loops=1)
+-> Table scan on film_temp (cost=103.00 rows=1000) (actual
+time=0.034..1.477 rows=1000 loops=1)
+```
+
+Добавим на столбец film_id ограничения первичного ключа,
+которое включает индекс:
+
+```sql
+ALTER TABLE film_temp ADD PRIMARY KEY (film_id);
+```
+
+Посмотрим на результат плана запроса:
+
+```sql
+EXPLAIN
+SELECT *
+FROM film_temp
+WHERE film_id = 100;
+```
+
+<img src = "img/img45.png" width = 60%>
+
+Результат EXPLAIN ANALYZE вернет:
+-> Rows fetched before execution (cost=0.00..0.00 rows=1) (actual
+time=0.000..0.001 rows=1 loops=1)
+
+Изменим немного данные и получим фильмы по двойному условию:
+
+```sql
+UPDATE film_temp
+SET release_year = 2005
+WHERE film_id <= 500;
+EXPLAIN ANALYZE
+SELECT *
+FROM film_temp
+WHERE language_id = 1 AND release_year = 2006;
+```
+
+-> Filter: ((film_temp.release_year = 2006) and (film_temp.language_id = 1))
+(cost=110.17 rows=10) (actual time=0.353..0.686 rows=500 loops=1)
+-> Table scan on film_temp (cost=110.17 rows=1000) (actual
+time=0.025..0.567 rows=1000 loops=1)
+
+Происходит обычный table scan.
+
+Создадим составной индекс:
+
+```sql
+CREATE INDEX lang_year ON film_temp(language_id, release_year);
+SELECT *
+FROM INFORMATION_SCHEMA.STATISTICS
+WHERE TABLE_NAME='film_temp';
+
+Проверим, что индексы есть:
+
+<img src = "img/img46.png" width = 60%>
+
