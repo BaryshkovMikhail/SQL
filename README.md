@@ -881,6 +881,9 @@ time=0.000..0.001 rows=1 loops=1)
 UPDATE film_temp
 SET release_year = 2005
 WHERE film_id <= 500;
+```
+
+```sql
 EXPLAIN ANALYZE
 SELECT *
 FROM film_temp
@@ -901,8 +904,31 @@ CREATE INDEX lang_year ON film_temp(language_id, release_year);
 SELECT *
 FROM INFORMATION_SCHEMA.STATISTICS
 WHERE TABLE_NAME='film_temp';
+```
 
 Проверим, что индексы есть:
 
 <img src = "img/img46.png" width = 60%>
 
+Получим фильмы по двойному условию с составным индексом:
+
+```sql
+EXPLAIN
+SELECT *
+FROM film_temp
+WHERE language_id = 1 AND release_year = 2006;
+```
+
+<img src = "img/img46.png" width = 60%>
+
+Планировщик использует составной индекс lang_year:
+
+```sql
+EXPLAIN ANALYZE
+SELECT *
+FROM film_temp
+WHERE language_id = 1 AND release_year = 2006;
+```
+
+-> Index lookup on film_temp using lang_year (language_id=1, release_year=2006)
+(cost=80.53 rows=500) (actual time=0.038..1.409 rows=500 loops=1)
