@@ -44,9 +44,9 @@ mysql> SHOW MASTER STATUS;
 
 Значениия File и Position меняются каждый раз.
 
-<img src = "img/img50.png" width = 60%>
+![img](img/img50.png)
 
-**!!! Важно запомнить Значения ячеек File и Position**
+## !!!Важно запомнить Значения ячеек File и Position
 
 Создадим учетную запись master для сервера репликации:
 
@@ -117,7 +117,7 @@ mysql> SHOW SLAVE STATUS\G
 - Seconds_Behind_Master—отставание данных в секундах
 - Last_IO_Error,Last_SQL_Error—ошибки репликации, если они есть
 
-# Режим master-master
+## Режим master-master
 
 ```bash
 docker run -d --name replication-master-one -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v ~/path/to/world/dump:/docker-entrypoint-initdb.d mysql:8.3
@@ -209,7 +209,7 @@ SHOW tables;
 SELECT * FROM city ORDER BY ID DESC LIMIT 1;
 ```
 
-# Шаг 1: Запуск двух контейнеров MySQL
+## Шаг 1: Запуск двух контейнеров MySQL
 
 Создадим две MySQL-ноды (mysql-master1 и mysql-master2) с открытыми портами и переменными для репликации.
 
@@ -248,7 +248,7 @@ docker run -d --name mysql-master2 \
 - gtid-mode=ON – использует GTID (Global Transaction ID) для удобной синхронизации.
 - skip-slave-start – не запускать репликацию автоматически (настроим вручную).
 
-# Шаг 2: Настройка Master-Master репликации
+## Шаг 2: Настройка Master-Master репликации
 
 1. Настройка первого мастера (mysql-master1)
 
@@ -289,7 +289,7 @@ SHOW MASTER STATUS;
 
 Запомните File и Position (например, mysql-bin.000003 и 834).
 
-# Шаг 3: Настройка репликации между мастерами
+## Шаг 3: Настройка репликации между мастерами
 
 1. На mysql-master2 настраиваем репликацию с mysql-master1
 
@@ -320,7 +320,7 @@ CHANGE MASTER TO
 START SLAVE;
 ```
 
-# Шаг 4: Проверка репликации
+## Шаг 4: Проверка репликации
 
 На обоих серверах выполните:
 
@@ -339,7 +339,7 @@ SHOW SLAVE STATUS\G
 - Доступность контейнеров (ping mysql-master1 из mysql-master2).
 - Правильность паролей и параметров MASTER_LOG_FILE / MASTER_LOG_POS.
 
-# Шаг 5: Тестирование
+## Шаг 5: Тестирование
 
 1. Создайте базу на mysql-master1:
 
@@ -425,7 +425,7 @@ select * from workers_3;
 
 Каждая партиция содержит данные из определенной для неё категории
 
-# Шардинг
+## Шардинг
 
 Для запуска postgreSQL используем docker compose. Создадим файл **docker-compose.yml** и добавим в него узел master:
 
@@ -492,7 +492,7 @@ postgres_b3:
 
 Структура проекта для docker-compose.yml:
 
-<img src = "img/img51.png" width = 60%>
+![img](img/img51.png)
 
 Файл shards.sql:
 

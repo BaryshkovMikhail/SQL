@@ -38,7 +38,7 @@ JOIN film_category fc ON fc.film_id = f.film_id
 JOIN category c ON c.category_id = fc. category_id;
 ```
 
-<img src = "img/img11.png" width = 40%>
+![img](img/img11.png)
 
 ## Простые запросы. ORDER BY
 
@@ -62,7 +62,7 @@ LIMIT 10
 OFFSET 57;
 ```
 
-<img src = "img/img10.png" width = 40%>
+![img](img/img10.png)
 
 ### Простые запросы. DISTINCT
 
@@ -75,7 +75,7 @@ SELECT DISTINCT first_name
 FROM customer;
 ```
 
-<img src = "img/img9.png" width = 20%>
+![img](img/img9.png)
 
 - Если нужно получить уникальные значения по нескольким столбцам, то данные столбцы перечисляются после оператора `DISTINCT`:
 
@@ -84,7 +84,7 @@ SELECT DISTINCT last_name, first_name
 FROM customer;
 ```
 
-<img src = "img/img8.png" width = 20%>
+![img](img/img8.png)
 
 ## Простые запросы. WHERE
 
@@ -103,7 +103,7 @@ FROM payment
 WHERE amount > 7 AND staff_id = 2 OR amount < 5 AND staff_id = 1;
 ```
 
-<img src = "img/img7.png" width = 100%>
+![img](img/img7.png)
 
 ## Простые запросы. CAST
 
@@ -113,7 +113,7 @@ WHERE amount > 7 AND staff_id = 2 OR amount < 5 AND staff_id = 1;
 CAST(value AS type)
 ```
 
-<img src = "img/img6.png" width = 90%>
+![img](img/img6.png)
 
 В таблице payment столбец payment_date имеет тип данных datetime, то есть дата и время, а нужно работать только с датой, для этого преобразуем datetime к date:
 
@@ -124,7 +124,7 @@ FROM payment;
 
 Таблица приведения типов, на примере MSSQL
 
-<img src = "img/img5.png" width = 100%>
+![img](img/img5.png)
 
 ## Округление
 
@@ -147,7 +147,7 @@ SELECT CEIL(100.576); -- 101
 SELECT ABS(-100.576); -- 100.576
 ```
 
-<img src = "img/img4.png" width = 50%>
+![img](img/img4.png)
 
 Получим «красивый» результат стоимости аренды за день:
 
@@ -197,7 +197,7 @@ SELECT  rental_rate, rental_duration,
 FROM film;
 ```
 
-<img src = "img/img3.png" width = 100%>
+![img](img/img3.png)
 
 ## Работа со строками
 
@@ -222,7 +222,7 @@ SELECT CONCAT(last_name, ' ', first_name, ' ', email) FROM customer;
 SELECT CONCAT_WS(' ', last_name, first_name, email) FROM customer;
 ```
 
-<img src = "img/img1.png" width = 70%>
+![img](img/img1.png)
 
 ```sql
 SELECT  LENGTH(last_name), CHAR_LENGTH(last_name),
@@ -230,7 +230,7 @@ SELECT  LENGTH(last_name), CHAR_LENGTH(last_name),
 FROM customer;
 ```
 
-<img src = "img/img2.png" width = 80%>
+![img](img/img2.png)
 
 ```sql
 SELECT  POSITION('D' IN last_name), SUBSTR(last_name, 2, 3),
@@ -238,7 +238,7 @@ SELECT  POSITION('D' IN last_name), SUBSTR(last_name, 2, 3),
 FROM customer;
 ```
 
-<img src = "img/img12.png" width = 80%>
+![img](img/img12.png)
 
 ```sql
 SELECT LOWER(last_name), INSERT(last_name, 'MAX', 1, 5),
@@ -246,7 +246,7 @@ REPLACE(last_name, 'A', 'X')
 FROM customer;
 ```
 
-<img src = "img/img13.png" width = 80%>
+![img](img/img13.png)
 
 Выражение `LIKE` возвращает true, если строка соответствует заданному шаблону. Выражение `NOT LIKE` возвращает `false`, когда`LIKE` возвращает true и наоборот. Если шаблон не содержит знаков процента и подчеркиваний, тогда шаблон представляет в точности строку и `LIKE` работает как оператор сравнения. Подчеркивание (_) в шаблоне подменяет (вместо него подходит) любой символ. Знак процента (%) подменяет любую (в том числе и пустую) последовательность символов.
 
@@ -256,7 +256,7 @@ FROM customer
 WHERE first_name LIKE '%jam%';
 ```
 
-<img src = "img/img14.png" width = 40%>
+![img](img/img14.png)
 
 ## Работа с датами и временем
 
@@ -277,39 +277,39 @@ WHERE first_name LIKE '%jam%';
 SELECT DATE_ADD(NOW(), INTERVAL 3 DAY);
 ```
 
-<img src = "img/img16.png" width = 40%>
+![img](img/img16.png)
 
 ```sql
 SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY);
 ```
 
-<img src = "img/img15.png" width = 40%>
+![img](img/img15.png)
 
 ```sql
 SELECT YEAR(NOW()), MONTH(NOW()), WEEK(NOW()), DAY(NOW());
 ```
 
-<img src = "img/img17.png" width = 40%>
+![img](img/img17.png)
 
 ```sql
 SELECT EXTRACT(HOUR FROM NOW()), EXTRACT(DAY_MINUTE FROM NOW()),
 EXTRACT(DAY FROM NOW());
 ```
 
-<img src = "img/img18.png" width = 70%>
+![img](img/img18.png)
 
 ```sql
 SELECT DATEDIFF(return_date, rental_date), QUARTER(return_date) FROM rental;
 ```
 
-<img src = "img/img19.png" width = 50%>
+![img](img/img16.png)
 
 ```sql
 SELECT DATE_FORMAT(payment_date, '%D – %A – %Y'),
 TIME_FORMAT(TIME(payment_date), '%R') FROM payment;
 ```
 
-<img src = "img/img20.png" width = 70%>
+![img](img/img20.png)
 
 При работе с датой и временем нужно помнить: если из `DATE` сделать `DATETIME`, то это будет дата с нулевым временем. К примеру, есть дата ‘2020-01-01’, если с ней работать, как с
 `DATETIME`, то SQL будет эту дату воспринимать, как ‘2020-01-01 00:00:00’. Соответственно, если значения в БД хранятся в DATETIME, но в запросе нужно работать именно с датами, то нужно явно приводить значения к нужному типу данных. Причем это касается не только дат, но и остальных типов данных.
@@ -322,7 +322,7 @@ TIME_FORMAT(TIME(payment_date), '%R') FROM payment;
 SELECT * FROM payment WHERE amount BETWEEN 5 AND 7;
 ```
 
-<img src = "img/img21.png" width = 80%>
+![img](img/img21.png)
 
 ## JOIN
 
@@ -350,7 +350,7 @@ INNER JOIN film_actor fa ON fa.film_id = f.film_id
 INNER JOIN actor a ON a.actor_id = fa.actor_id;
 ```
 
-<img src = "img/img22.png" width = 40%>
+![img](img/img22.png)
 
 В этом случае можно использовать **INNER JOIN** без потери данных, так как в таблицах есть необходимые ограничения
 
@@ -367,7 +367,7 @@ LEFT JOIN address a ON a.address_id = c.address_id
 LEFT JOIN city c2 ON c2.city_id = a.city_id;
 ```
 
-<img src = "img/img23.png" width = 60%>
+![img](img/img23.png)
 
 Чтобы получить только те строки, которые не содержат данных в правой таблице, можно использовать оператор **WHERE**
 
@@ -383,7 +383,7 @@ WHERE r.rental_id IS NULL;
 
 Здесь получаем 100% данных по всем фильмам, обогащаем через LEFT JOIN данными по аренде. Фильмы, которые не брали в аренду дополняются значениями NULL, по которым и фильтруем в конце запроса
 
-<img src = "img/img24.png" width = 30%>
+![img](img/img24.png)
 
 ### RIGHT JOIN
 
@@ -398,7 +398,7 @@ RIGHT JOIN address a ON a.address_id = c.address_id
 RIGHT JOIN city c2 ON c2.city_id = a.city_id;
 ```
 
-<img src = "img/img25.png" width = 60%>
+![img](img/img25.png)
 
 ### FULL JOIN
 
@@ -413,7 +413,7 @@ FROM rental r
 FULL JOIN payment p ON p.rental_id = r.rental_id;
 ```
 
-<img src = "img/img26.png" width = 60%>
+![img](img/img26.png)
 
 Чтобы получить список уникальных строк из обеих таблиц, можно также воспользоваться оператором **WHERE**
 
@@ -426,7 +426,7 @@ FULL JOIN payment p ON p.rental_id = r.rental_id
 WHERE r.rental_id IS NULL OR p.payment_id IS NULL;
 ```
 
-<img src = "img/img27.png" width = 60%>
+![img](img/img27.png)
 
 Реализация FULL JOIN в MySQL с помощью оператора UNION. Нужно получить данные по всем арендам и платежам по этим арендам
 
@@ -440,7 +440,7 @@ FROM rental r
 RIGHT JOIN payment p ON p.rental_id = r.rental_id;
 ```
 
-<img src = "img/img28.png" width = 60%>
+![img](img/img28.png)
 
 ### CROSS JOIN
 
@@ -484,7 +484,7 @@ INSERT
 VALUES('black'),('yellow'),('blue'),('red');
 ```
 
-<img src = "img/img29.png" width = 30%>
+![img](img/img29.png)
 
 При объединении данных через оператор UNION в результате будет список уникальных значений для двух таблиц:
 
@@ -497,7 +497,7 @@ SELECT color_2 FROM table_2;
 Обязательное условие при работе с операторами **UNION** или **EXCEPT** — количество столбцов и их типы
 данных в таблицах сверху и снизу должно быть одинаковым
 
-<img src = "img/img30.png" width = 10%>
+![img](img/img30.png)
 
 При объединении данных через оператор UNION ALL в результате будет список всех значений для двух таблиц:
 
@@ -517,7 +517,7 @@ EXCEPT
 SELECT color_2 FROM table_2;
 ```
 
-<img src = "img/img31.png" width = 10%>
+![img](img/img31.png)
 
 Оператор **EXCEPT** не поддерживается **MySQL**, но можно такой жерезультат получить следующим запросом:
 
@@ -555,7 +555,7 @@ WHERE
  LOWER(LEFT(title, 1)) = 'a';
 ```
 
-<img src = "img/img32.png" width = 10%>
+![img](img/img32.png)
 
 Так как функция COUNT возвращает количество строк, полученных в результате запроса, то аргументом можно передать любое значение, главное, чтобы оно соответствовало смыслу задачи
 
@@ -567,7 +567,7 @@ FROM payment
 GROUP BY customer_id;
 ```
 
-<img src = "img/img33.png" width = 70%>
+![img](img/img33.png)
 
 ## Группировка данных
 
@@ -592,7 +592,7 @@ JOIN film_actor fa ON fa.film_id = f.film_id
 GROUP BY f.film_id;
 ```
 
-<img src = "img/img34.png" width = 60%>
+![img](img/img34.png)
 
 ## HAVING
 
@@ -606,7 +606,7 @@ GROUP BY c.customer_id
 HAVING COUNT(r.rental_id) > 40;
 ```
 
-<img src = "img/img35.png" width = 60%>
+![img](img/img35.png)
 
 ## Подзапросы
 
@@ -628,7 +628,7 @@ FROM payment
 GROUP BY MONTH(payment_date);
 ```
 
-<img src = "img/img36.png" width = 60%>
+![img](img/img36.png)
 
 Нужно получить фильмы из категорий, начинающихся на букву С:
 
@@ -644,7 +644,7 @@ WHERE name LIKE 'C%')
 ORDER BY f.title;
 ```
 
-<img src = "img/img37.png" width = 40%>
+![img](img/img37.png)
 
 Получим отношение количества платежей к количеству аренд по каждому сотруднику:
 
@@ -669,7 +669,7 @@ JOIN (
   staff_id) t2 ON s.staff_id = t2.staff_id;
 ```
 
-<img src = "img/img38.png" width = 60%>
+![img](img/img38.png)
 
 ## CASE
 
@@ -695,7 +695,7 @@ ORDER BY
 LIMIT 5;
 ```
 
-<img src = "img/img39.png" width = 40%>
+![img](img/img39.png)
 
 ## IFNULL
 
@@ -720,7 +720,7 @@ GROUP BY
  c.customer_id
 ```
 
-<img src = "img/img40.png" width = 30%>
+![img](img/img40.png)
 
 ## COALESCE
 
@@ -733,9 +733,9 @@ DATEDIFF(NOW(), rental_date)) AS diff
 FROM rental
 ```
 
-<img src = "img/img41.png" width = 20%>
+![img](img/img41.png)
 
-# EXPLAIN
+## EXPLAIN
 
 Оператор **EXPLAIN** демонстрирует этапы выполнения запроса и может быть использован для оптимизации. По результату работы **EXPLAIN** можно выяснить, где в запросе узкие места, нужно ли использовать индексы, верный ли порядок и алгоритмы джойна выбраны при соединении таблиц и так далее.
 
@@ -756,7 +756,7 @@ JOIN city c2 ON c2.city_id = a.city_id
 WHERE c2.city_id = 17;
 ```
 
-<img src = "img/img42.png" width = 20%>
+![img](img/img42.png)
 
 ## EXPLAIN ANALYZE
 
@@ -823,7 +823,7 @@ WHERE
  TABLE_NAME = 'film_temp';
 ```
 
-<img src = "img/img43.png" width = 60%>
+![img](img/img43.png)
 
 ```sql
 SHOW INDEXES FROM film_temp;
@@ -838,7 +838,7 @@ FROM film_temp
 WHERE film_id = 100;
 ```
 
-<img src = "img/img44.png" width = 60%>
+![img](img/img44.png)
 
 Видим, что происходит обычное сканирование таблицы, отсутствует значение possible_keys:
 
@@ -869,7 +869,7 @@ FROM film_temp
 WHERE film_id = 100;
 ```
 
-<img src = "img/img45.png" width = 60%>
+![img](img/img45.png)
 
 Результат EXPLAIN ANALYZE вернет:
 -> Rows fetched before execution (cost=0.00..0.00 rows=1) (actual
@@ -908,7 +908,7 @@ WHERE TABLE_NAME='film_temp';
 
 Проверим, что индексы есть:
 
-<img src = "img/img46.png" width = 60%>
+![img](img/img46.png)
 
 Получим фильмы по двойному условию с составным индексом:
 
@@ -919,7 +919,7 @@ FROM film_temp
 WHERE language_id = 1 AND release_year = 2006;
 ```
 
-<img src = "img/img47.png" width = 60%>
+![img](img/img47.png)
 
 Планировщик использует составной индекс lang_year:
 
@@ -967,7 +967,7 @@ FROM INFORMATION_SCHEMA.TABLES
 WHERE table_name = "film_temp";
 ```
 
-<img src = "img/img48.png" width = 60%>
+![img](img/img48.png)
 
 Добавим индекс PRIMARY KEY и составной индекс lang_year и проверим размер:
 
@@ -979,4 +979,4 @@ FROM INFORMATION_SCHEMA.TABLES
 WHERE table_name = "film_temp";
 ```
 
-<img src = "img/img49.png" width = 60%>
+![img](img/img49.png)
